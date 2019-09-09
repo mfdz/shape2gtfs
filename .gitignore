@@ -1,0 +1,5 @@
+*.zip
+data/
+out/
+*.qgz
+*.pyc
