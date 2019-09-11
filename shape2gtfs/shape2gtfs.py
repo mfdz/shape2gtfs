@@ -21,36 +21,36 @@ from shapely.ops import transform
 
 class Config:
 	AGENCY_ID = 'LaPazBus'
-	AGENCY = GtfsAgency('LaPazBus','La Paz Bus','http://www.lapazbus.bo/','agency_timezone','agency_lang','agency_email')
+	AGENCY = GtfsAgency('LaPazBus','La Paz Bus','http://www.lapazbus.bo/','America/La_Paz','es','info@lapaz.bo')
 	DEFAULT_SPEED_METER_PER_SECOND = 5 # 18kmph
 	SRS = pyproj.Proj(init='epsg:32719')
 	HEADWAY_SECS = 10 * 60 # every 10 Minutes
 	SERVICE_START_TIME = "06:00"
 	SERVICE_END_TIME = "22:00"
-	ROUTE_TYPE = 700
+	ROUTE_TYPE = 3
 	FREQUENCIES = [{
-		"start_time": "00:00",
-		"end_time": "04:00",
+		"start_time": "00:00:00",
+		"end_time": "04:00:00",
 		"headway_secs": 30 * 60 
 	}, {
-		"start_time": "04:00",
-		"end_time": "11:00",
+		"start_time": "04:00:00",
+		"end_time": "11:00:00",
 		"headway_secs": 10 * 60 
 	}, {
-		"start_time": "11:00",
-		"end_time": "13:00",
+		"start_time": "11:00:00",
+		"end_time": "13:00:00",
 		"headway_secs": 5 * 60 
 	}, {
-		"start_time": "13:00",
-		"end_time": "17:00",
+		"start_time": "13:00:00",
+		"end_time": "17:00:00",
 		"headway_secs": 10 * 60 
 	}, {
-		"start_time": "17:00",
-		"end_time": "23:00",
+		"start_time": "17:00:00",
+		"end_time": "23:00:00",
 		"headway_secs": 5 * 60 
 	}, {
-		"start_time": "23:00",
-		"end_time": "00:00",
+		"start_time": "23:00:00",
+		"end_time": "24:00:00",
 		"headway_secs": 30 * 60 
 	}]
 
@@ -74,7 +74,7 @@ class Shape2GTFS:
 		self.dataDir = dataDir
 		self.stopsPrefix = stopsPrefix
 		self.gtfsExporter = GtfsExport([Config.AGENCY], 
-			GtfsFeedInfo('feed_id','feed_publisher_name','feed_publisher_url','feed_lang','feed_version'), None)
+			GtfsFeedInfo('LaPazBus','MFDZ','https://mfdz.de','es','20190911'), None)
 		self.projection = project = partial(
 				pyproj.transform,
 				Config.SRS,

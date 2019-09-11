@@ -13,7 +13,7 @@ GtfsRoute = namedtuple('GtfsRoute',  'agency_id route_id route_long_name route_t
 GtfsStop = namedtuple('GtfsStop', 'stop_id stop_lat stop_lon stop_name')
 GtfsStopTime = namedtuple('GtfsStopTime', 'trip_id departure_time arrival_time stop_id stop_sequence pickup_type drop_off_type timepoint')
 GtfsTrip = namedtuple('GtfsTrip', 'route_id trip_id service_id shape_id trip_headsign bikes_allowed')
-GtfsFrequency = namedtuple('GtfsFrequency', 'trip_id start_time end_time headway_sec exact_time')
+GtfsFrequency = namedtuple('GtfsFrequency', 'trip_id start_time end_time headway_secs exact_times')
 GtfsCalendar = namedtuple('GtfsCalendar', 'service_id start_date end_date monday tuesday wednesday thursday friday saturday sunday')
 GtfsCalendarDate = namedtuple('GtfsCalendarDate', 'service_id date exception_type')
 GtfsShape = namedtuple('GtfsShape','shape_id shape_pt_lat shape_pt_lon shape_pt_sequence')
@@ -67,7 +67,10 @@ class GtfsExport:
 	
 	def zip_files(self, gtfszip_filename, gtfsfolder):
 		gtfsfiles = ['agency.txt', 'feed_info.txt', 'routes.txt', 'trips.txt', 'frequencies.txt',
-				'calendar.txt', 'calendar_dates.txt', 'stops.txt', 'stop_times.txt', 'shapes.txt']
+			'calendar.txt', 'stops.txt', 'stop_times.txt', 'shapes.txt']
+		if self.calendar_dates:
+			gtfsfiles.append('calendar_dates.txt')
+
 		with ZipFile(gtfszip_filename, 'w') as gtfszip:
 			for gtfsfile in gtfsfiles:
 				gtfszip.write(gtfsfolder+'/'+gtfsfile, gtfsfile)
@@ -174,8 +177,9 @@ class GtfsExport:
 		return date_time.strftime("%H:%M:%S")
 	
 	def write_csvfile(self, gtfsfolder, filename, content):
-		with open(gtfsfolder+"/"+filename, 'w', newline="\n", encoding="utf-8") as csvfile:
-			self.write_csv(csvfile, content)
+		if content:
+			with open(gtfsfolder+"/"+filename, 'w', newline="\n", encoding="utf-8") as csvfile:
+				self.write_csv(csvfile, content)
 	
 	def write_csv(self, csvfile, content):
 		if hasattr(content, '_fields'):
